@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KLE Canteen — Kitchen Display & Canteen Management | Gokak Campus</title>
+  
+  <!-- Meta SEO & Open Graph -->
+  <meta name="description" content="Dedicated Kitchen Display System (KDS), Dispatch Hub, and Live Menu & Price Inventory Manager for KLE Canteen, KLE Society's College of BCA, Gokak.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            orange: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+            },
+            emerald: {
+              50: '#ecfdf5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            heading: ['"Outfit"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#F8FAFC] text-slate-800 antialiased font-sans flex flex-col min-h-screen">
+
+  <!-- ================= TOP NOTICE TICKER ================= -->
+  <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-orange-600 text-white uppercase tracking-wider">
+          Staff Portal
+        </span>
+        <span class="font-medium text-slate-300">
+          KLE Society's College of BCA, Gokak • Canteen Operations Hub
+        </span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] font-semibold text-slate-400">
+        <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          KDS Realtime Sync Active
+        </span>
+        <a href="index.html" class="text-orange-400 hover:text-orange-300 transition flex items-center gap-1">
+          <span>Switch to Student Side</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <a href="canteen.html" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-slate-900 to-slate-800 flex items-center justify-center text-white shadow-md shadow-slate-900/20 group-hover:scale-105 transition-transform">
+            <i data-lucide="chef-hat" class="w-6 h-6 text-orange-500"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-heading font-black text-xl tracking-tight text-slate-900">KLE Canteen</span>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-orange-100 text-orange-800 uppercase tracking-wider">Kitchen Hub</span>
+            </div>
+            <p class="text-[11px] text-slate-500 font-medium">KLE College of BCA, Gokak • Near Byalikata</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center Shift / Status Pill -->
+      <div class="hidden lg:flex items-center gap-2">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">
+          <i data-lucide="user-check" class="w-4 h-4 text-emerald-600"></i>
+          <span>Chef Mallikarjun (Counter 1 Head)</span>
+        </div>
+      </div>
+
+      <!-- Right Action Controls -->
+      <div class="flex items-center gap-3">
+        <!-- Supabase Cloud Status Indicator -->
+        <div id="supabaseStatusBadge" onclick="openSupabaseModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 shadow-sm cursor-pointer hover:bg-amber-100 transition" title="Click to configure Supabase Project URL & Key">
+          <span id="supabaseStatusDot" class="w-2 h-2 rounded-full bg-amber-500"></span>
+          <span id="supabaseStatusText">Connect Supabase</span>
+        </div>
+
+        <a href="index.html" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:text-orange-600 hover:bg-orange-50 transition border border-slate-200">
+          <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+          <span>Student View</span>
+        </a>
+
+        <button onclick="lockStaffPortal()" class="p-2 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition border border-slate-200" title="Lock Canteen Portal">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN CANTEEN DASHBOARD ================= -->
+  <main class="flex-1 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <!-- Canteen Header & Metrics Bar -->
+      <div class="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-orange-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-800">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-3 py-1 rounded-full text-xs font-black bg-orange-600 text-white flex items-center gap-1.5">
+                <i data-lucide="chef-hat" class="w-3.5 h-3.5"></i>
+                CANTEEN KITCHEN DISPLAY SYSTEM (KDS)
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot"></span> Live Operations Hub
+              </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-heading font-black">Kitchen Orders & Cooking Dispatch</h1>
+            <p class="text-xs text-slate-400 mt-1">Live synchronized view of student orders, cooking statuses, and counter queue calls for KLE Gokak Campus.</p>
+          </div>
+
+          <!-- Kitchen Quick Actions -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="soundManager.playKitchenBell()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 transition flex items-center gap-1.5" title="Test kitchen alert bell">
+              <i data-lucide="bell" class="w-4 h-4 text-amber-400"></i>
+              <span>Test Bell</span>
+            </button>
+            <button onclick="simulateIncomingOrder()" class="px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1.5 active:scale-95">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>+ Simulate Student Order</span>
+            </button>
+            <button onclick="loadCanteenData()" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700 transition" title="Refresh Board">
+              <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Live Metrics Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-6">
+          <div class="bg-slate-800/70 p-4 rounded-2xl border border-slate-700">
+            <span class="text-xs font-semibold text-orange-400 flex items-center gap-1.5 mb-1">
+              <i data-lucide="inbox" class="w-4 h-4"></i>
+              <span>New Orders (Pending)</span>
+            </span>
+            <span id="metricPendingCount" class="text-3xl font-black">0</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Awaiting chef confirmation</span>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-2xl border border-slate-700">
+            <span class="text-xs font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
+              <i data-lucide="flame" class="w-4 h-4"></i>
+              <span>Cooking in Kitchen</span>
+            </span>
+            <span id="metricCookingCount" class="text-3xl font-black">0</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">On tawa, grill & wok</span>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-2xl border border-slate-700">
+            <span class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
+              <i data-lucide="bell-ring" class="w-4 h-4"></i>
+              <span>Ready for Collection</span>
+            </span>
+            <span id="metricReadyCount" class="text-3xl font-black">0</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Calling at counters</span>
+          </div>
+
+          <div class="bg-slate-800/70 p-4 rounded-2xl border border-slate-700">
+            <span class="text-xs font-semibold text-blue-400 flex items-center gap-1.5 mb-1">
+              <i data-lucide="banknote" class="w-4 h-4"></i>
+              <span>Today's Total Sales</span>
+            </span>
+            <span id="metricTotalRevenue" class="text-3xl font-black">₹0</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Subsidized student earnings</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Counter Dispatcher & Wait-Time Controller -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-heading font-extrabold text-lg text-slate-900">Counter Dispatch & Queue Manager</h3>
+            <p class="text-xs text-slate-500">Update wait times or adjust rush levels to advance the student live display.</p>
+          </div>
+          <span class="text-xs font-bold text-slate-400">4 Active Counters</span>
+        </div>
+
+        <div id="kitchenCountersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Kitchen Kanban Board (4 Columns) -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <h3 class="font-heading font-extrabold text-xl text-slate-900">Live Kitchen Queue</h3>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700" id="kitchenTotalLiveOrdersBadge">0 Live Orders</span>
+          </div>
+          <span class="text-xs text-slate-500">Click buttons to advance cooking status in real time</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Column 1: Received / Pending -->
+          <div class="kds-column p-4 flex flex-col">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                <h4 class="font-bold text-sm text-slate-800">1. Received</h4>
+              </div>
+              <span id="colCountPending" class="px-2 py-0.5 rounded-full text-xs font-bold bg-orange-100 text-orange-700">0</span>
+            </div>
+            <div id="kdsColPending" class="space-y-3 flex-1 overflow-y-auto">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Column 2: Cooking Now -->
+          <div class="kds-column p-4 flex flex-col">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 live-dot"></span>
+                <h4 class="font-bold text-sm text-slate-800">2. Cooking 🔥</h4>
+              </div>
+              <span id="colCountCooking" class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700">0</span>
+            </div>
+            <div id="kdsColCooking" class="space-y-3 flex-1 overflow-y-auto">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Column 3: Ready for Pickup -->
+          <div class="kds-column p-4 flex flex-col">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-dot"></span>
+                <h4 class="font-bold text-sm text-slate-800">3. Ready 🔔</h4>
+              </div>
+              <span id="colCountReady" class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">0</span>
+            </div>
+            <div id="kdsColReady" class="space-y-3 flex-1 overflow-y-auto">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Column 4: Completed -->
+          <div class="kds-column p-4 flex flex-col">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <h4 class="font-bold text-sm text-slate-800">4. Handed Over</h4>
+              </div>
+              <span id="colCountCompleted" class="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700">0</span>
+            </div>
+            <div id="kdsColCompleted" class="space-y-3 flex-1 overflow-y-auto">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Menu Stock Availability Toggle (Chef control) -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-heading font-extrabold text-lg text-slate-900">Quick Stock Control (Core Dishes)</h3>
+            <p class="text-xs text-slate-500">Toggle "Sold Out" if any dish is temporarily exhausted in the kitchen.</p>
+          </div>
+          <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">100% Pure Veg</span>
+        </div>
+        <div id="kitchenStockGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Live Menu Items & Price Manager (Add, Update, Remove Dishes) -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="px-3 py-1 rounded-full text-xs font-black bg-orange-100 text-orange-700 flex items-center gap-1.5">
+                <i data-lucide="utensils" class="w-3.5 h-3.5"></i>
+                CANTEEN MENU & PRICE INVENTORY
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                Live Supabase Synchronized
+              </span>
+            </div>
+            <h3 class="font-heading font-black text-2xl text-slate-900">Canteen Menu & Price Manager</h3>
+            <p class="text-xs text-slate-500 mt-1 max-w-2xl">
+              Add new food items, update prices in Indian Rupees (₹), or delete items. Changes made here immediately update the <strong>Student Portal</strong> in real time.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="restoreDefaultMenu()" class="px-3.5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600 transition" title="Restore initial menu items">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 inline mr-1"></i>
+              Reset Default
+            </button>
+            <button onclick="openAddItemModal()" class="px-5 py-3 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs sm:text-sm shadow-xl shadow-orange-600/30 transition active:scale-95 flex items-center gap-2">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>+ Add New Food Item</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Filter Controls -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+          <div class="relative flex-1 max-w-sm">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="canteenManagerSearch" 
+              oninput="renderCanteenMenuManager()" 
+              placeholder="Filter items by name, price, category..." 
+              class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-white"
+            >
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select id="canteenManagerCategory" onchange="renderCanteenMenuManager()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:border-orange-500">
+              <option value="all">All Categories</option>
+              <option value="breakfast">🥞 Breakfast</option>
+              <option value="meals">🍛 Meals & Thalis</option>
+              <option value="fastfood">🥪 Fast Food & Maggi</option>
+              <option value="snacks">🥟 Snacks & Chaat</option>
+              <option value="beverages">☕ Beverages & Coolers</option>
+              <option value="desserts">🍨 Desserts</option>
+            </select>
+            <span id="canteenManagerCount" class="text-xs font-bold text-slate-500 whitespace-nowrap pl-2">0 Dishes</span>
+          </div>
+        </div>
+
+        <!-- Canteen Menu Items Cards Grid -->
+        <div id="canteenItemsManageGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <!-- Rendered dynamically by canteen.js -->
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 text-slate-400 py-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <div>
+        <p class="font-bold text-slate-300">KLE Canteen — Kitchen & Management Portal</p>
+        <p class="text-slate-500 mt-0.5">KLE Society's College of BCA, Gokak • Near Byalikata, Gokak - 591307.</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="text-orange-400 hover:text-orange-300 font-bold transition">🎓 Open Student Portal</a>
+        <button onclick="openSupabaseModal()" class="text-slate-400 hover:text-white transition">⚡ Database Settings</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= CANTEEN: ADD NEW FOOD ITEM MODAL ================= -->
+  <div id="addItemModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-orange-100 relative max-h-[92vh] overflow-y-auto">
+      <button onclick="closeAddItemModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-5 pb-3 border-b border-slate-100">
+        <div class="w-11 h-11 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+          <i data-lucide="plus" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="font-heading font-black text-xl text-slate-900">Add New Food Item</h3>
+          <p class="text-xs text-slate-500">Will immediately appear on Student Menu in Rupees (₹)</p>
+        </div>
+      </div>
+
+      <form id="addItemForm" onsubmit="handleCreateItem(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Item / Dish Name *</label>
+          <input type="text" id="addNameInput" required placeholder="e.g. Gokak Special Girmit with Mirchi" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Price in Rupees (₹) *</label>
+            <input type="number" id="addPriceInput" required min="5" max="999" placeholder="e.g. 45" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Menu Category *</label>
+            <select id="addCategoryInput" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:border-orange-500 bg-slate-50">
+              <option value="breakfast">🥞 Breakfast (7-11 AM)</option>
+              <option value="meals">🍛 Meals & Thalis</option>
+              <option value="fastfood">🥪 Fast Food & Maggi</option>
+              <option value="snacks" selected>🥟 Snacks & Chaat</option>
+              <option value="beverages">☕ Beverages & Coolers</option>
+              <option value="desserts">🍨 Desserts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kitchen Prep Time</label>
+            <input type="text" id="addPrepTimeInput" placeholder="e.g. 5 mins" value="5 mins" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Calories Estimate</label>
+            <input type="text" id="addCaloriesInput" placeholder="e.g. 280 kcal" value="300 kcal" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Highlight Badge / Tag</label>
+          <input type="text" id="addBadgeInput" placeholder="e.g. Gokak Special, Chef's Choice, Bestseller" value="Campus Special" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Dish Description</label>
+          <textarea id="addDescInput" rows="2" placeholder="Brief description of the dish and ingredients..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Image URL (Optional)</label>
+          <input type="url" id="addImageInput" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div class="pt-2 flex gap-3">
+          <button type="button" onclick="closeAddItemModal()" class="px-5 py-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button type="submit" class="flex-1 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg shadow-orange-600/30 transition active:scale-95">
+            Save & Add to Menu
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= CANTEEN: EDIT FOOD ITEM & PRICE MODAL ================= -->
+  <div id="editItemModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative max-h-[92vh] overflow-y-auto">
+      <button onclick="closeEditItemModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-5 pb-3 border-b border-slate-100">
+        <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+          <i data-lucide="edit-3" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="font-heading font-black text-xl text-slate-900">Update Dish & Price</h3>
+          <p class="text-xs text-slate-500">Edit price or item details for <span id="editModalItemName" class="font-bold text-slate-800">Dish</span></p>
+        </div>
+      </div>
+
+      <form id="editItemForm" onsubmit="handleSaveEditItem(event)" class="space-y-4">
+        <input type="hidden" id="editItemIdInput">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Item / Dish Name *</label>
+          <input type="text" id="editNameInput" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Price in Rupees (₹) *</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 font-black text-sm text-slate-500">₹</span>
+              <input type="number" id="editPriceInput" required min="5" max="999" class="w-full pl-8 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-black text-slate-900 focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Menu Category *</label>
+            <select id="editCategoryInput" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:border-orange-500 bg-slate-50">
+              <option value="breakfast">🥞 Breakfast</option>
+              <option value="meals">🍛 Meals & Thalis</option>
+              <option value="fastfood">🥪 Fast Food & Maggi</option>
+              <option value="snacks">🥟 Snacks & Chaat</option>
+              <option value="beverages">☕ Beverages & Coolers</option>
+              <option value="desserts">🍨 Desserts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kitchen Prep Time</label>
+            <input type="text" id="editPrepTimeInput" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Badge Tag</label>
+            <input type="text" id="editBadgeInput" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Dish Description</label>
+          <textarea id="editDescInput" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Image URL</label>
+          <input type="url" id="editImageInput" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div class="pt-2 flex gap-3">
+          <button type="button" onclick="closeEditItemModal()" class="px-5 py-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button type="submit" class="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition active:scale-95">
+            Update Dish & Price
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= STAFF PIN SECURITY GATE MODAL ================= -->
+  <div id="staffPinModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-slate-100 text-center">
+      <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="shield-check" class="w-8 h-8"></i>
+      </div>
+
+      <h3 class="font-heading font-black text-xl text-slate-900 mb-1">Canteen Staff Access</h3>
+      <p class="text-xs text-slate-500 mb-5 leading-relaxed">
+        Enter your staff passcode to unlock the kitchen display and price manager.
+      </p>
+
+      <form onsubmit="handleStaffPinSubmit(event)" class="space-y-4">
+        <div>
+          <input 
+            type="password" 
+            id="staffPinInput" 
+            required 
+            placeholder="Enter Staff PIN (e.g. 1916)" 
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 text-center font-black tracking-widest text-lg focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white"
+          >
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-[11px] text-slate-500">
+          💡 Demo PIN: <strong class="text-orange-600 font-bold">1916</strong> (KLE Founding Year) or <strong class="text-orange-600 font-bold">KLE@GOKAK</strong>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-black text-sm rounded-xl shadow-lg shadow-orange-600/30 transition active:scale-95">
+          Unlock Canteen Portal
+        </button>
+      </form>
+
+      <div class="mt-4 pt-4 border-t border-slate-100">
+        <a href="index.html" class="text-xs font-bold text-slate-500 hover:text-slate-800 transition">
+          ← Return to Student Ordering Portal
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/canteen.js"></script>
+</body>
+</html>

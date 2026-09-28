@@ -1,0 +1,363 @@
+/* ==========================================================================
+   KLE CANTEEN - MODERN & PREMIUM STYLESHEET
+   Brand Identity: Warm Terracotta & Saffron (#EA580C, #F59E0B),
+   Deep Charcoal Slate (#0F172A), Emerald Fresh (#10B981)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #ea580c;
+  --primary-hover: #c2410c;
+  --primary-light: #fff7ed;
+  --primary-glow: rgba(234, 88, 12, 0.25);
+  --secondary: #0f172a;
+  --secondary-light: #1e293b;
+  --accent: #f59e0b;
+  --accent-light: #fef3c7;
+  --veg-green: #16a34a;
+  --nonveg-red: #dc2626;
+  --bg-warm: #fcfbf9;
+  --card-bg: #ffffff;
+  --border-subtle: #f1f5f9;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-warm);
+  color: #1e293b;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Custom Selection */
+::selection {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Glassmorphism & Blurs */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Hero Glow Background */
+.hero-glow {
+  background: radial-gradient(circle at 50% 20%, rgba(249, 115, 22, 0.15) 0%, rgba(245, 158, 11, 0.08) 35%, transparent 70%);
+}
+
+.hero-mesh {
+  background-image: 
+    radial-gradient(at 15% 25%, rgba(234, 88, 12, 0.12) 0px, transparent 50%),
+    radial-gradient(at 85% 75%, rgba(245, 158, 11, 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(22, 163, 74, 0.05) 0px, transparent 50%);
+}
+
+/* Card Transitions & Hover Effects */
+.card-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.08), 0 10px 15px -5px rgba(234, 88, 12, 0.05);
+}
+
+.food-image-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.food-image-wrapper img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover:hover .food-image-wrapper img {
+  transform: scale(1.08);
+}
+
+/* Dietary Badges: Standard FSSAI Green / Red Indicators */
+.veg-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #16a34a;
+  border-radius: 4px;
+  background-color: #ffffff;
+  padding: 2px;
+}
+
+.veg-indicator::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background-color: #16a34a;
+  border-radius: 50%;
+}
+
+.nonveg-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #dc2626;
+  border-radius: 4px;
+  background-color: #ffffff;
+  padding: 2px;
+}
+
+.nonveg-indicator::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background-color: #dc2626;
+  border-radius: 2px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* Keyframe Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(234, 88, 12, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(234, 88, 12, 0.6);
+  }
+}
+
+.animate-glow {
+  animation: pulseGlow 2.5s infinite;
+}
+
+@keyframes liveDot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.3);
+  }
+}
+
+.live-dot {
+  animation: liveDot 1.6s ease-in-out infinite;
+}
+
+@keyframes tickerAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: tickerAnimation 32s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Digital Token Receipt Perforation Style */
+.receipt-perforation-top {
+  position: relative;
+}
+.receipt-perforation-top::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: radial-gradient(circle at 10px 0, transparent 7px, #ffffff 8px);
+  background-size: 20px 10px;
+  background-repeat: repeat-x;
+}
+
+.receipt-perforation-bottom {
+  position: relative;
+}
+.receipt-perforation-bottom::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: radial-gradient(circle at 10px 10px, transparent 7px, #ffffff 8px);
+  background-size: 20px 10px;
+  background-repeat: repeat-x;
+}
+
+/* Quantity Button Ripple & Feel */
+.qty-btn {
+  transition: all 0.15s ease-in-out;
+}
+.qty-btn:active {
+  transform: scale(0.9);
+}
+
+/* Cart Badge Bounce */
+@keyframes badgePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+.badge-bump {
+  animation: badgePop 0.3s ease-out;
+}
+
+/* Shimmer Loading / Accent */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-badge {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Custom Radio & Checkboxes */
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Print Styling for Token Slip */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printableReceipt, #printableReceipt * {
+    visibility: visible;
+  }
+  #printableReceipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    box-shadow: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Kitchen Display System (KDS) & Order Status Styles */
+.kds-column {
+  min-height: 520px;
+  background-color: #f8fafc;
+  border-radius: 1.25rem;
+  border: 1px solid #e2e8f0;
+}
+
+.kds-card {
+  transition: all 0.25s ease-in-out;
+  border-left-width: 4px;
+}
+
+.kds-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.1);
+}
+
+.status-border-pending {
+  border-left-color: #f97316;
+}
+.status-border-cooking {
+  border-left-color: #eab308;
+}
+.status-border-ready {
+  border-left-color: #10b981;
+}
+.status-border-completed {
+  border-left-color: #64748b;
+}
+
+@keyframes newOrderFlash {
+  0%, 100% { background-color: #ffffff; }
+  50% { background-color: #fff7ed; }
+}
+
+.flash-new-order {
+  animation: newOrderFlash 1.5s ease-in-out 3;
+}
+
+/* Student Order Progress Tracker */
+.progress-step-active {
+  background-color: #ea580c;
+  color: #ffffff;
+}
+
+.progress-step-done {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.progress-line-done {
+  background-color: #10b981;
+}
+
+.progress-line-active {
+  background-color: #ea580c;
+}
+

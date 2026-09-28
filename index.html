@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KLE Canteen | Campus Fuel & Hangout Spot</title>
+  <meta name="description" content="Official digital canteen portal for KLE Campus. Skip the queue, pre-order fresh Dosas, Meals, Thalis, Biryani, Maggi and Filter Kaapi in Rupees with live token tracking.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍲</text></svg>">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+            }
+          },
+          fontFamily: {
+            heading: ['Outfit', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Canvas Confetti CDN for celebratory checkout -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-[#FCFBF9] text-slate-800 antialiased min-h-screen flex flex-col selection:bg-orange-100 selection:text-orange-700">
+
+  <!-- ================= TOP NOTICE TICKER ================= -->
+  <div class="bg-slate-950 text-slate-300 text-xs py-2 overflow-hidden border-b border-slate-800">
+    <div class="ticker-track flex items-center gap-12 font-medium">
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span> <strong>KLE SOCIETY'S COLLEGE OF BCA, GOKAK:</strong> Official Canteen Portal • Near Byalikata</span>
+      <span class="flex items-center gap-2">🎓 <strong>SERVING COURSES:</strong> BCA • B.COM • BBA • BA • 100% Pure Vegetarian</span>
+      <span class="flex items-center gap-2">🟢 <strong>CANTEEN OPEN:</strong> 7:30 AM – 9:00 PM • Live Counter Pre-orders Active</span>
+      <span class="flex items-center gap-2">⚡ <strong>FLAT 15% OFF:</strong> Use Student Coupon <code class="bg-orange-950 text-orange-400 px-2 py-0.5 rounded border border-orange-800">KLESTUDENT</code></span>
+      <span class="flex items-center gap-2">☕ <strong>HOT SPECIAL:</strong> Authentic South Indian Filter Kaapi at ₹25 • Frothy & Fresh</span>
+      <!-- Duplicate for infinite seamless scroll -->
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span> <strong>KLE SOCIETY'S COLLEGE OF BCA, GOKAK:</strong> Official Canteen Portal • Near Byalikata</span>
+      <span class="flex items-center gap-2">🎓 <strong>SERVING COURSES:</strong> BCA • B.COM • BBA • BA • 100% Pure Vegetarian</span>
+      <span class="flex items-center gap-2">🟢 <strong>CANTEEN OPEN:</strong> 7:30 AM – 9:00 PM • Live Counter Pre-orders Active</span>
+    </div>
+  </div>
+
+  <!-- ================= MAIN NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-slate-200/80 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-2 sm:gap-4">
+        
+        <!-- Logo & Branding -->
+        <a href="#" class="flex items-center gap-3 group shrink-0">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-orange-600 via-amber-500 to-orange-400 flex items-center justify-center text-white shadow-lg shadow-orange-600/25 group-hover:scale-105 transition-transform duration-300">
+            <i data-lucide="flame" class="w-6 h-6 fill-white"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-heading text-xl sm:text-2xl font-black text-slate-900 tracking-tight">KLE <span class="text-orange-600">CANTEEN</span></span>
+              <span class="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> 100% PURE VEG
+              </span>
+            </div>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium">KLE College of BCA, Gokak • Near Byalikata</p>
+          </div>
+        </a>
+
+        <!-- Supabase Cloud / Database Status Badge -->
+        <div id="supabaseStatusBadge" onclick="openSupabaseModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 shadow-sm cursor-pointer hover:bg-amber-100 transition" title="Click to configure Supabase Project URL & Anon Key">
+          <span id="supabaseStatusDot" class="w-2 h-2 rounded-full bg-amber-500"></span>
+          <span id="supabaseStatusText">Connect Supabase</span>
+        </div>
+
+        <!-- Desktop Navigation Links (For Student View) -->
+        <nav id="studentNavLinks" class="hidden xl:flex items-center gap-6 text-xs font-bold text-slate-600">
+          <a href="#rush-meter" class="hover:text-orange-600 transition flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 live-dot"></span>
+            <span>Live Rush</span>
+          </a>
+          <a href="#campus-combos" class="hover:text-orange-600 transition">Combos</a>
+          <a href="#canteen-menu" class="hover:text-orange-600 transition">Canteen Menu</a>
+          <a href="#campus-reviews" class="hover:text-orange-600 transition">Reviews</a>
+          <a href="#canteen-info" class="hover:text-orange-600 transition">Hours & Map</a>
+          <a href="canteen.html" class="hover:text-orange-600 transition text-slate-400 font-semibold" title="Canteen Staff & Kitchen Operations Portal">Staff Portal ↗</a>
+        </nav>
+
+        <!-- Right Action Items (Auth + Cart + Sound) -->
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          
+          <!-- Sound Toggle -->
+          <button id="soundToggleBtn" class="hidden sm:flex items-center gap-1 px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-[11px] font-bold text-slate-600" title="Toggle audio effects">
+            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>Sound</span>
+          </button>
+
+          <!-- Student Profile / Login State -->
+          <div id="studentAuthContainer" class="flex items-center">
+            <!-- Rendered dynamically by app.js: Either Login button or Student Profile chip -->
+          </div>
+
+          <!-- Active Token Indicator (if order placed) -->
+          <button id="activeTokenBadge" onclick="reopenActiveTokenModal()" class="hidden items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500 text-white font-bold text-xs shadow-md animate-pulse">
+            <i data-lucide="ticket" class="w-4 h-4"></i>
+            <span id="activeTokenNumber">#KLE-000</span>
+          </button>
+
+          <!-- Shopping Cart Trigger Button -->
+          <button id="cartTriggerBtn" class="relative flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-95 group">
+            <i data-lucide="shopping-bag" class="w-4 h-4 text-orange-400 group-hover:rotate-12 transition-transform"></i>
+            <span class="hidden sm:inline">Tray</span>
+            <span class="cart-badge bg-orange-600 text-white text-[11px] font-black rounded-full px-2 py-0.5 shadow-sm">
+              0
+            </span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= STUDENT SIDE CONTAINER ================= -->
+  <div id="studentSideContainer">
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative overflow-hidden hero-mesh hero-glow pt-8 pb-16 lg:pt-16 lg:pb-24 border-b border-orange-100/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Hero Content -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          
+          <!-- Pill Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 shadow-sm text-xs font-bold text-emerald-800">
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+            </span>
+            <span>KLE SOCIETY'S COLLEGE OF BCA, GOKAK • 100% PURE VEG</span>
+          </div>
+
+          <!-- Main Catchy Headline -->
+          <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.12]">
+            Fresh, Hot & <br class="hidden sm:block">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500">Campus-Affordable.</span>
+          </h1>
+
+          <!-- Description -->
+          <p class="text-base sm:text-lg text-slate-600 font-normal max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            Welcome to the official digital canteen of <strong>KLE Society's College of BCA, Gokak</strong> (Near Byalikata). Serving fresh, hot dosas, royal thalis, Maggi, and filter kaapi for students of <strong>BCA, B.COM, BBA & BA</strong> courses. Pre-order and skip the rush!
+          </p>
+
+          <!-- Quick CTA Buttons -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="#canteen-menu" class="px-7 py-4 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-base shadow-xl shadow-orange-600/30 hover:shadow-orange-600/40 transition-all active:scale-95 flex items-center gap-2">
+              <i data-lucide="utensils-crossed" class="w-5 h-5"></i>
+              <span>Explore Canteen Menu</span>
+            </a>
+            <a href="#rush-meter" class="px-6 py-4 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-base border border-slate-200/80 shadow-sm hover:border-orange-200 transition-all flex items-center gap-2">
+              <i data-lucide="activity" class="w-5 h-5 text-orange-600"></i>
+              <span>Live Rush Meter</span>
+            </a>
+          </div>
+
+          <!-- Feature Metric Badges -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-orange-100">
+            <div class="p-3 bg-white/70 backdrop-blur-sm rounded-2xl border border-orange-100/60 shadow-sm">
+              <span class="block text-2xl font-black text-slate-900">~6 Mins</span>
+              <span class="text-xs text-slate-500 font-medium">Avg Kitchen Prep</span>
+            </div>
+            <div class="p-3 bg-white/70 backdrop-blur-sm rounded-2xl border border-orange-100/60 shadow-sm">
+              <span class="block text-2xl font-black text-slate-900">35+ Items</span>
+              <span class="text-xs text-slate-500 font-medium">Daily Fresh Menu</span>
+            </div>
+            <div class="p-3 bg-white/70 backdrop-blur-sm rounded-2xl border border-orange-100/60 shadow-sm">
+              <span class="block text-2xl font-black text-slate-900">From ₹25</span>
+              <span class="text-xs text-slate-500 font-medium">Student Friendly</span>
+            </div>
+            <div class="p-3 bg-white/70 backdrop-blur-sm rounded-2xl border border-orange-100/60 shadow-sm">
+              <span class="block text-2xl font-black text-emerald-600">4.9 / 5</span>
+              <span class="text-xs text-slate-500 font-medium">2,400+ Reviews</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Hero Visual & Interactive Card Stack -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative mx-auto max-w-md lg:max-w-none">
+            
+            <!-- Glow background -->
+            <div class="absolute -inset-4 bg-gradient-to-r from-orange-500 to-amber-400 rounded-3xl blur-2xl opacity-20 animate-pulse"></div>
+
+            <!-- Main Feature Food Card -->
+            <div class="relative bg-white rounded-3xl p-5 shadow-2xl border border-orange-100 animate-float">
+              
+              <div class="relative h-64 sm:h-72 rounded-2xl overflow-hidden mb-4 bg-slate-100">
+                <img 
+                  src="https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=800&q=80" 
+                  alt="Mysore Masala Dosa" 
+                  class="w-full h-full object-cover"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                
+                <div class="absolute top-3 left-3 flex items-center gap-2">
+                  <span class="veg-indicator shadow"></span>
+                  <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-orange-600 text-white shadow-md">
+                    #1 Campus Bestseller
+                  </span>
+                </div>
+
+                <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
+                  <span class="bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-xl flex items-center gap-1 font-semibold">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
+                    <span>Prep: 6 mins</span>
+                  </span>
+                  <span class="bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-xl flex items-center gap-1 font-semibold">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                    <span>4.9 (1.2k+ ordered)</span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Content -->
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <h3 class="text-xl font-bold text-slate-900">Mysore Masala Dosa</h3>
+                  <p class="text-xs text-slate-500 font-medium">Fiery garlic chutney, spiced potato, pure ghee</p>
+                </div>
+                <div class="text-right">
+                  <span class="text-2xl font-black text-slate-900">₹65</span>
+                  <span class="block text-[10px] text-slate-400">Student Price</span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <button onclick="addItemToCart('b1')" class="flex-1 py-3 px-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-2xl transition shadow-md shadow-orange-600/25 flex items-center justify-center gap-2 text-sm active:scale-95">
+                  <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                  <span>Add to Tray</span>
+                </button>
+                <button onclick="openCustomizeModal('b1')" class="p-3 bg-slate-100 hover:bg-slate-200 rounded-2xl text-slate-700 transition" title="Customize with Extra Ghee or Cheese">
+                  <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Floating Micro Card 1: Fast Pickup -->
+            <div class="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 hidden sm:flex">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                <i data-lucide="zap" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="block text-xs font-bold text-slate-900">Zero Wait Pickup</span>
+                <span class="text-[11px] text-slate-500">Pick up with token QR</span>
+              </div>
+            </div>
+
+            <!-- Floating Micro Card 2: Student Discount -->
+            <div class="absolute -top-6 -right-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 hidden sm:flex">
+              <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+                <i data-lucide="percent" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="block text-xs font-bold text-slate-900">KLE Student Pass</span>
+                <span class="text-[11px] text-slate-500">15% off applied at cart</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LIVE RUSH METER & COUNTER STATUS ================= -->
+  <section id="rush-meter" class="py-16 bg-white border-b border-slate-100 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 mb-2">
+            <span class="w-2 h-2 rounded-full bg-amber-500 live-dot"></span>
+            <span>REAL-TIME CANTEEN STATUS</span>
+          </div>
+          <h2 class="text-3xl font-heading font-extrabold text-slate-900">Live Rush & Counter Wait Times</h2>
+          <p class="text-slate-600 text-sm mt-1">Check which counter has the shortest queue before heading down from classes.</p>
+        </div>
+
+        <!-- Token Search Input for checking order -->
+        <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-2xl border border-slate-200 w-full md:w-80">
+          <i data-lucide="ticket" class="w-4 h-4 text-slate-400 ml-2"></i>
+          <input 
+            type="text" 
+            id="tokenTrackerInput" 
+            placeholder="Check Token (e.g. #KLE-142)" 
+            class="bg-transparent text-xs font-semibold focus:outline-none flex-1 text-slate-800 uppercase"
+          >
+          <button id="trackTokenBtn" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition">
+            Check
+          </button>
+        </div>
+      </div>
+
+      <!-- Token status result alert -->
+      <div id="tokenLookupResult" class="hidden mb-6"></div>
+
+      <!-- 4 Counters Grid -->
+      <div id="countersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= TODAY'S CAMPUS SPECIAL COMBOS ================= -->
+  <section id="campus-combos" class="py-16 bg-gradient-to-b from-orange-50/40 to-transparent border-b border-orange-100/60 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold text-orange-600 uppercase tracking-widest bg-orange-100/80 px-3 py-1 rounded-full">
+          Super Value Bundles
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 mt-3">
+          Campus Favorite Combos
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">
+          Curated meal sets designed for quick lecture breaks, late-night lab grinds, and student budgets.
+        </p>
+      </div>
+
+      <!-- Combos Grid -->
+      <div id="combosContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= THE CANTEEN MENU (DYNAMIC FILTERABLE) ================= -->
+  <section id="canteen-menu" class="py-16 bg-white border-b border-slate-100 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title & Search Bar -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+        <div>
+          <span class="text-xs font-bold text-orange-600 uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            Freshly Prepared Daily
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-heading font-black text-slate-900 mt-2">
+            The KLE Canteen Menu
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1" id="menuCountBadge">
+            All prices are in Indian Rupees (₹) including all taxes.
+          </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          
+          <!-- Search Bar -->
+          <div class="relative flex-1 sm:w-72">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="menuSearchInput" 
+              placeholder="Search dosa, maggi, biryani, kaapi..." 
+              class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-medium focus:outline-none focus:border-orange-500 focus:bg-white transition"
+            >
+          </div>
+
+          <!-- 100% Pure Veg Guarantee Badge -->
+          <div class="flex items-center gap-2 px-3.5 py-2 bg-emerald-50 border border-emerald-200/90 rounded-2xl text-emerald-800 shrink-0 shadow-sm">
+            <span class="veg-indicator"></span>
+            <span class="text-xs font-black tracking-wide">100% PURE VEG</span>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="relative shrink-0">
+            <select id="menuSortSelect" class="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:outline-none focus:border-orange-500 cursor-pointer hover:bg-slate-100 transition">
+              <option value="recommended">✨ Recommended</option>
+              <option value="price-asc">💰 Price: Low to High</option>
+              <option value="price-desc">💎 Price: High to Low</option>
+              <option value="rating">⭐ Highest Rated</option>
+              <option value="fastest">⚡ Quickest Prep</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none mb-8">
+        <button data-category="all" class="cat-tab-btn px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-orange-600 text-white shadow-md transition-all shrink-0 flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>All Items</span>
+        </button>
+        <button data-category="breakfast" class="cat-tab-btn px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-orange-50 border border-slate-200/80 transition-all shrink-0 flex items-center gap-1.5">
+          <span>🥞 Breakfast (7-11 AM)</span>
+        </button>
+        <button data-category="meals" class="cat-tab-btn px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-orange-50 border border-slate-200/80 transition-all shrink-0 flex items-center gap-1.5">
+          <span>🍛 Meals & Thalis</span>
+        </button>
+        <button data-category="fastfood" class="cat-tab-btn px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-orange-50 border border-slate-200/80 transition-all shrink-0 flex items-center gap-1.5">
+          <span>🥪 Maggi & Sandwiches</span>
+        </button>
+        <button data-category="snacks" class="cat-tab-btn px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-orange-50 border border-slate-200/80 transition-all shrink-0 flex items-center gap-1.5">
+          <span>🥟 Snacks & Chaat</span>
+        </button>
+        <button data-category="beverages" class="cat-tab-btn px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-orange-50 border border-slate-200/80 transition-all shrink-0 flex items-center gap-1.5">
+          <span>☕ Beverages & Kaapi</span>
+        </button>
+        <button data-category="desserts" class="cat-tab-btn px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-orange-50 border border-slate-200/80 transition-all shrink-0 flex items-center gap-1.5">
+          <span>🍨 Sweets & Desserts</span>
+        </button>
+      </div>
+
+      <!-- Menu Items Grid -->
+      <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= HYGIENE & CAMPUS QUALITY PROMISE ================= -->
+  <section class="py-16 bg-[#F8FAFC] border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl">
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-orange-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-3xl mb-10">
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider">
+            CAMPUS HEALTH & HYGIENE STANDARD
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-heading font-black mt-3">
+            Pure Food, Clean Water, Honest Campus Pricing
+          </h2>
+          <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+            At KLE Canteen, our kitchen follows rigorous university food safety guidelines. We ensure students and faculty receive freshly cooked, nutritious, and hygienic food every single day.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10">
+            <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center mb-3">
+              <i data-lucide="droplet" class="w-5 h-5"></i>
+            </div>
+            <h4 class="font-bold text-base mb-1">100% RO Purified</h4>
+            <p class="text-xs text-slate-300">All cooking, ice, and drinking water passes through certified commercial multi-stage RO filters.</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+            </div>
+            <h4 class="font-bold text-base mb-1">FSSAI Certified</h4>
+            <p class="text-xs text-slate-300">Audited kitchens, hairnets, stainless steel appliances, and daily fresh ingredient procurement.</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3">
+              <i data-lucide="badge-percent" class="w-5 h-5"></i>
+            </div>
+            <h4 class="font-bold text-base mb-1">Student Subsidized</h4>
+            <p class="text-xs text-slate-300">Nutritious meals starting from ₹25 and unlimited thalis at ₹95 to stay gentle on college budgets.</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-3">
+              <i data-lucide="qr-code" class="w-5 h-5"></i>
+            </div>
+            <h4 class="font-bold text-base mb-1">UPI & Kiosk Ready</h4>
+            <p class="text-xs text-slate-300">Scan & pay with GPay, PhonePe, Paytm, or tap your KLE campus card at the pickup counter.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= STUDENT REVIEWS & CAMPUS BUZZ ================= -->
+  <section id="campus-reviews" class="py-16 bg-white border-b border-slate-100 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <span class="text-xs font-bold text-orange-600 uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            Campus Buzz & Feedbacks
+          </span>
+          <h2 class="text-3xl font-heading font-extrabold text-slate-900 mt-2">
+            What KLE Students Say
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Over 2,400+ genuine ratings from engineering, science, and medical students across campus.
+          </p>
+        </div>
+
+        <button onclick="openAddReviewModal()" class="px-5 py-3 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm transition shadow-md shadow-orange-600/25 flex items-center gap-2 self-start md:self-auto">
+          <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+          <span>Share Your Feedback</span>
+        </button>
+      </div>
+
+      <!-- Reviews Grid -->
+      <div id="reviewsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= CANTEEN TIMINGS, LOCATION & FAQ ================= -->
+  <section id="canteen-info" class="py-16 bg-[#FAF9F6] border-b border-slate-200/60 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Timings & Location Left -->
+        <div class="lg:col-span-6 space-y-6">
+          <div>
+            <span class="text-xs font-bold text-orange-600 uppercase tracking-widest bg-orange-100/70 px-3 py-1 rounded-full">
+              Hours & Meal Slots
+            </span>
+            <h2 class="text-3xl font-heading font-extrabold text-slate-900 mt-2">
+              Canteen Schedule & Location
+            </h2>
+            <p class="text-sm text-slate-600 mt-1">
+              Serving continuous freshly cooked food 7 days a week.
+            </p>
+          </div>
+
+          <!-- Schedule Cards -->
+          <div class="space-y-3">
+            <div class="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+                  🥞
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900">Breakfast & Kaapi</h4>
+                  <p class="text-xs text-slate-500">Dosas, Idli, Vada, Poha, Puri Bhaji</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
+                7:30 AM – 11:30 AM
+              </span>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold">
+                  🍛
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900">Lunch & Royal Thalis</h4>
+                  <p class="text-xs text-slate-500">Full South Meals, Handi Biryani, Rotis</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
+                12:00 PM – 3:30 PM
+              </span>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold">
+                  🥟
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900">Evening Munchies & Chaat</h4>
+                  <p class="text-xs text-slate-500">Samosa Pav, Maggi, Cold Coffee, Pakodas</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
+                4:00 PM – 6:30 PM
+              </span>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+                  🥪
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900">Dinner & Late Snacks</h4>
+                  <p class="text-xs text-slate-500">Fried Rice, Rolls, Sandwiches, Desserts</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
+                7:00 PM – 9:00 PM
+              </span>
+            </div>
+          </div>
+
+          <!-- Location Details -->
+          <div class="p-5 bg-orange-50 rounded-2xl border border-orange-200/80 flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center shrink-0">
+              <i data-lucide="map-pin" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900">Campus Location</h4>
+              <p class="text-xs text-slate-600 mt-1">KLE Society's College of BCA Campus, <strong>Near Byalikata, Gokak</strong>, Karnataka - 591307.</p>
+              <p class="text-xs text-slate-500 mt-0.5">Serving students and staff of <strong>BCA, B.COM, BBA & BA</strong> courses daily.</p>
+              <p class="text-xs text-orange-700 font-semibold mt-1">Canteen Helpline: +91 8332 225566 (Shri Mahantesh, Canteen Manager)</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FAQ Accordion Right -->
+        <div class="lg:col-span-6 space-y-4">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest bg-slate-200 px-3 py-1 rounded-full">
+              Got Questions?
+            </span>
+            <h2 class="text-3xl font-heading font-extrabold text-slate-900 mt-2">
+              Frequently Asked Questions
+            </h2>
+            <p class="text-sm text-slate-600 mt-1">
+              Common queries about digital pre-orders, token pickups, and payment modes.
+            </p>
+          </div>
+
+          <div class="space-y-3 pt-2">
+            <details class="group bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm [&_summary::-webkit-details-marker]:hidden" open>
+              <summary class="flex items-center justify-between cursor-pointer font-bold text-sm text-slate-900 group-hover:text-orange-600 transition">
+                <span>How does the digital queue / token system work?</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                When you order through the website, you receive a unique digital token (e.g. <code>#KLE-142</code>) and counter assignment. Simply walk to the counter once the live countdown is complete, show your digital token or QR slip, and pick up your hot food immediately.
+              </p>
+            </details>
+
+            <details class="group bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between cursor-pointer font-bold text-sm text-slate-900 group-hover:text-orange-600 transition">
+                <span>Can I pay using UPI (GPay/PhonePe/Paytm)?</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                Yes! When placing an order, a live UPI QR code is automatically generated for your exact total in Rupees (₹). You can also choose Cash at Counter or tap your KLE Student Smart Card.
+              </p>
+            </details>
+
+            <details class="group bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between cursor-pointer font-bold text-sm text-slate-900 group-hover:text-orange-600 transition">
+                <span>How do I claim the 15% KLE Student Discount?</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                Use the coupon code <code>KLESTUDENT</code> in your cart drawer. You can also show your valid KLE University ID card at the pickup counter for verification.
+              </p>
+            </details>
+
+            <details class="group bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between cursor-pointer font-bold text-sm text-slate-900 group-hover:text-orange-600 transition">
+                <span>Can I pre-order bulk combos for student club events or fests?</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                Yes! We cater to all IEEE, ACM, Cultural, and Sports fest events on campus. Contact the Canteen Manager directly at the counter or via helpline for fest discounts.
+              </p>
+            </details>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 text-slate-400 pt-16 pb-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+        
+        <!-- Brand Summary -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center text-white font-bold">
+              <i data-lucide="flame" class="w-6 h-6"></i>
+            </div>
+            <span class="font-heading text-2xl font-black text-white">KLE <span class="text-orange-500">CANTEEN</span></span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            Serving fresh, delicious, and pocket-friendly meals, dosas, snacks, and filter kaapi to the vibrant students, professors, and staff of KLE Campus.
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-800 text-emerald-400 border border-slate-700 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span>
+              Kitchen Active
+            </span>
+            <span class="text-xs text-slate-500">All prices in INR (₹)</span>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
+          <ul class="space-y-2.5 text-xs">
+            <li><a href="#rush-meter" class="hover:text-orange-400 transition">Live Counter Rush</a></li>
+            <li><a href="#campus-combos" class="hover:text-orange-400 transition">Student Combos</a></li>
+            <li><a href="#canteen-menu" class="hover:text-orange-400 transition">Explore Full Menu</a></li>
+            <li><a href="#campus-reviews" class="hover:text-orange-400 transition">Student Testimonials</a></li>
+            <li><a href="#canteen-info" class="hover:text-orange-400 transition">Timings & Location</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Popular Cravings</h4>
+          <ul class="space-y-2.5 text-xs">
+            <li><a href="#canteen-menu" class="hover:text-orange-400 transition">Mysore Masala Dosa</a></li>
+            <li><a href="#canteen-menu" class="hover:text-orange-400 transition">Cheese Tadka Maggi</a></li>
+            <li><a href="#canteen-menu" class="hover:text-orange-400 transition">Royal South Thali</a></li>
+            <li><a href="#canteen-menu" class="hover:text-orange-400 transition">Signature Filter Kaapi</a></li>
+            <li><a href="#canteen-menu" class="hover:text-orange-400 transition">Cold Coffee & Fudge</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Hours -->
+        <div>
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Campus Hub</h4>
+          <p class="text-xs text-slate-400 mb-2">Central Quadrangle, Main Campus</p>
+          <p class="text-xs text-slate-400 mb-2">Open Daily: 7:30 AM – 9:00 PM</p>
+          <p class="text-xs text-orange-400 font-semibold mb-2">WhatsApp Helpline: +91 98450 12345</p>
+          <p class="text-[11px] text-slate-500">Managed in association with KLE Student Welfare Committee.</p>
+        </div>
+
+      </div>
+
+      <!-- Copyright -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p>© 2026 KLE Canteen. All rights reserved. Crafted with ❤️ for KLE Campus.</p>
+        <div class="flex items-center gap-6">
+          <span>Student Subsidized Pricing</span>
+          <span>100% Hygienic</span>
+          <span>FSSAI Lic. #112233440055</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MOBILE STICKY BOTTOM TRAY BAR ================= -->
+  <div id="mobileCartBar" class="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-2xl z-40 lg:hidden hidden">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <span id="mobileCartTotal" class="text-lg font-black text-slate-900">₹0</span>
+          <span id="mobileCartCount" class="text-xs text-slate-500 font-medium">(0 items)</span>
+        </div>
+        <span class="text-[10px] text-emerald-600 font-bold">Ready for instant pickup</span>
+      </div>
+      <button id="cartMobileTriggerBtn" class="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-2xl text-xs shadow-md shadow-orange-600/30 flex items-center gap-2">
+        <span>View Tray</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= SLIDE-OVER CART DRAWER ================= -->
+  <div id="cartBackdrop" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  
+  <div id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-heading text-lg font-bold text-slate-900">My Canteen Tray</h3>
+          <p class="text-[11px] text-slate-500">Pick up at assigned counter</p>
+        </div>
+      </div>
+      <button id="closeCartBtn" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Drawer Body -->
+    <div class="flex-1 overflow-y-auto p-5 space-y-4">
+      
+      <!-- Empty State -->
+      <div id="emptyCartState" class="text-center py-16 hidden">
+        <div class="w-16 h-16 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-bold text-slate-800 text-base mb-1">Your tray is empty!</h4>
+        <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">Add your favorite dosas, combos, or kaapi from the menu to start your order.</p>
+      </div>
+
+      <!-- Items List -->
+      <div id="cartItemsContainer" class="space-y-3">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+    </div>
+
+    <!-- Drawer Footer & Checkout -->
+    <div id="cartFooter" class="p-5 border-t border-slate-100 bg-slate-50 space-y-4">
+      
+      <!-- Student Name & Roll No -->
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 mb-1">Student Name</label>
+          <input type="text" id="studentNameInput" placeholder="e.g. Rahul Patil" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-white">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 mb-1">KLE Roll / USN</label>
+          <input type="text" id="studentRollInput" placeholder="e.g. 2KL22CS084" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-white uppercase">
+        </div>
+      </div>
+
+      <!-- Promo Code Field -->
+      <div>
+        <div class="flex items-center gap-2">
+          <input 
+            type="text" 
+            id="promoCodeInput" 
+            placeholder="Coupon Code (Try KLESTUDENT)" 
+            class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500 bg-white uppercase"
+          >
+          <button id="applyPromoBtn" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs transition">
+            Apply
+          </button>
+        </div>
+        <div class="flex items-center gap-2 mt-1.5">
+          <span class="text-[10px] text-slate-400">Try:</span>
+          <button onclick="document.getElementById('promoCodeInput').value='KLESTUDENT'; document.getElementById('applyPromoBtn').click();" class="text-[10px] text-orange-600 font-bold hover:underline">KLESTUDENT (15% Off)</button>
+          <button onclick="document.getElementById('promoCodeInput').value='EXAMFUEL'; document.getElementById('applyPromoBtn').click();" class="text-[10px] text-orange-600 font-bold hover:underline">EXAMFUEL (₹20 Off)</button>
+        </div>
+      </div>
+
+      <!-- Price Breakdown -->
+      <div class="space-y-1.5 text-xs pt-2 border-t border-slate-200">
+        <div class="flex justify-between text-slate-600">
+          <span>Subtotal</span>
+          <span id="cartSubtotal" class="font-bold text-slate-900">₹0</span>
+        </div>
+        <div id="discountRow" class="flex justify-between text-emerald-600 font-semibold hidden">
+          <span>Student Discount</span>
+          <span id="cartDiscount">-₹0</span>
+        </div>
+        <div class="flex justify-between text-slate-600">
+          <span>Campus Packaging & Kiosk Fee</span>
+          <span class="font-bold text-emerald-600">FREE</span>
+        </div>
+        <div class="flex justify-between text-base font-black text-slate-900 pt-2 border-t border-slate-200">
+          <span>Grand Total</span>
+          <span id="cartTotal" class="text-orange-600">₹0</span>
+        </div>
+      </div>
+
+      <!-- Checkout Button -->
+      <button 
+        onclick="initiateCheckout()" 
+        class="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-2xl shadow-xl shadow-orange-600/30 text-sm flex items-center justify-center gap-2 transition active:scale-95"
+      >
+        <i data-lucide="zap" class="w-4 h-4"></i>
+        <span>Confirm Order & Generate Token</span>
+      </button>
+
+      <p class="text-[10px] text-center text-slate-400">
+        🔒 Pay via UPI or Cash at counter upon picking up your token.
+      </p>
+
+    </div>
+  </div>
+
+  <!-- ================= DIGITAL KIOSK TOKEN & RECEIPT MODAL ================= -->
+  <div id="orderConfirmationModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden border border-orange-100 flex flex-col max-h-[92vh]">
+      
+      <!-- Top Celebration Bar -->
+      <div class="bg-gradient-to-r from-orange-600 to-amber-500 p-6 text-white text-center relative no-print">
+        <button onclick="closeTokenModal()" class="absolute top-4 right-4 text-white/80 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="check" class="w-8 h-8 stroke-[3]"></i>
+        </div>
+        <h3 class="text-2xl font-black font-heading tracking-tight">Order Confirmed!</h3>
+        <p class="text-xs text-orange-100 mt-1">Your order has reached the canteen kitchen display.</p>
+      </div>
+
+      <!-- Printable Digital Receipt Content -->
+      <div id="printableReceipt" class="p-6 overflow-y-auto space-y-5 bg-white">
+        
+        <!-- Header -->
+        <div class="text-center border-b border-dashed border-slate-200 pb-4">
+          <h4 class="font-heading text-lg font-black text-slate-900">KLE CANTEEN KIOSK SLIP</h4>
+          <p class="text-[11px] text-slate-500" id="tokenTime">Campus Hub • Order Slip</p>
+        </div>
+
+        <!-- Big Token Display -->
+        <div class="bg-orange-50 rounded-2xl p-5 border-2 border-orange-200 text-center">
+          <span class="block text-xs font-bold text-orange-800 uppercase tracking-wider mb-1">Your Pickup Token</span>
+          <span id="tokenDisplayNumber" class="text-4xl sm:text-5xl font-black text-orange-600 tracking-wider">#KLE-000</span>
+          
+          <div class="mt-3 pt-3 border-t border-orange-200/80 flex items-center justify-center gap-2 text-xs font-bold text-slate-700">
+            <i data-lucide="map-pin" class="w-4 h-4 text-orange-600"></i>
+            <span id="tokenCounter">Counter 1</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Live Countdown -->
+        <div class="bg-slate-900 text-white rounded-2xl p-4 text-center">
+          <span class="block text-[11px] text-slate-400 font-semibold mb-1">Estimated Food Ready In</span>
+          <div id="tokenCountdownTimer" class="text-2xl font-black text-amber-400 font-mono tracking-widest">
+            06:00
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1">Please show this screen when your token number is called.</p>
+        </div>
+
+        <!-- Student Info -->
+        <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl">
+          <div>
+            <span class="text-slate-400 block text-[10px]">Student Name</span>
+            <span id="tokenStudentName" class="font-bold text-slate-800">KLE Student</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px]">Roll / USN</span>
+            <span id="tokenStudentRoll" class="font-bold text-slate-800">2KL22CS000</span>
+          </div>
+        </div>
+
+        <!-- Order Items Breakdown -->
+        <div>
+          <span class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Itemized Order</span>
+          <div id="tokenReceiptItems" class="space-y-1">
+            <!-- Populated dynamically -->
+          </div>
+          <div class="flex justify-between text-sm font-black text-slate-900 pt-2 mt-2 border-t border-slate-300">
+            <span>Total Payable</span>
+            <span id="tokenTotalAmount" class="text-orange-600">₹0</span>
+          </div>
+        </div>
+
+        <!-- Simulated UPI QR Code for instant scan -->
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+          <div class="inline-block p-2 bg-white rounded-xl shadow-sm border border-slate-200 mb-2 relative">
+            <!-- Simulated crisp SVG QR code -->
+            <svg class="w-28 h-28 mx-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="white"/>
+              <!-- Corner markers -->
+              <rect x="5" y="5" width="25" height="25" rx="3" fill="#0F172A"/>
+              <rect x="9" y="9" width="17" height="17" rx="2" fill="white"/>
+              <rect x="13" y="13" width="9" height="9" fill="#EA580C"/>
+
+              <rect x="70" y="5" width="25" height="25" rx="3" fill="#0F172A"/>
+              <rect x="74" y="9" width="17" height="17" rx="2" fill="white"/>
+              <rect x="78" y="13" width="9" height="9" fill="#EA580C"/>
+
+              <rect x="5" y="70" width="25" height="25" rx="3" fill="#0F172A"/>
+              <rect x="9" y="74" width="17" height="17" rx="2" fill="white"/>
+              <rect x="13" y="78" width="9" height="9" fill="#EA580C"/>
+
+              <!-- QR Matrix Pattern simulation -->
+              <rect x="35" y="10" width="5" height="10" fill="#0F172A"/>
+              <rect x="45" y="8" width="8" height="6" fill="#0F172A"/>
+              <rect x="58" y="12" width="6" height="8" fill="#0F172A"/>
+              <rect x="35" y="25" width="28" height="6" fill="#0F172A"/>
+
+              <rect x="10" y="35" width="6" height="18" fill="#0F172A"/>
+              <rect x="22" y="40" width="10" height="8" fill="#0F172A"/>
+              <rect x="36" y="36" width="14" height="14" fill="#EA580C"/>
+              <rect x="55" y="38" width="18" height="8" fill="#0F172A"/>
+              <rect x="78" y="35" width="14" height="14" fill="#0F172A"/>
+
+              <rect x="12" y="58" width="18" height="6" fill="#0F172A"/>
+              <rect x="35" y="55" width="8" height="14" fill="#0F172A"/>
+              <rect x="48" y="58" width="14" height="6" fill="#0F172A"/>
+              <rect x="68" y="55" width="24" height="8" fill="#0F172A"/>
+
+              <rect x="36" y="75" width="8" height="18" fill="#0F172A"/>
+              <rect x="48" y="70" width="16" height="6" fill="#0F172A"/>
+              <rect x="68" y="72" width="10" height="12" fill="#0F172A"/>
+              <rect x="82" y="75" width="12" height="18" fill="#0F172A"/>
+            </svg>
+          </div>
+          <span class="block text-[11px] font-bold text-slate-800">Scan & Pay via any UPI App</span>
+          <span class="text-[10px] text-slate-500">GPay • PhonePe • Paytm • BHIM • Campus Card</span>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center gap-3 no-print">
+        <button onclick="printTokenReceipt()" class="flex-1 py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>Print / Save Slip</span>
+        </button>
+        <button onclick="closeTokenModal()" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-bold transition">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= CUSTOMIZE DISH MODAL ================= -->
+  <div id="customizeModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 id="customModalTitle" class="font-heading font-bold text-lg text-slate-900">Customize Dish</h3>
+          <span id="customModalBasePrice" class="text-xs text-orange-600 font-bold">Base: ₹0</span>
+        </div>
+        <button onclick="closeCustomizeModal()" class="text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Customization Options Checkboxes -->
+      <div id="customOptionsList" class="space-y-2">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="pt-3 flex gap-2">
+        <button onclick="closeCustomizeModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition">
+          Cancel
+        </button>
+        <button id="addCustomizedBtn" onclick="confirmCustomization()" class="flex-1 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= WRITE REVIEW MODAL ================= -->
+  <div id="reviewModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="font-heading font-bold text-lg text-slate-900">Campus Canteen Feedback</h3>
+          <p class="text-xs text-slate-500">Your review will help improve our service!</p>
+        </div>
+        <button onclick="closeAddReviewModal()" class="text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="addReviewForm" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Your Name</label>
+          <input type="text" id="revName" required placeholder="e.g. Anand Kulkarni" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-orange-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Branch / Year</label>
+          <input type="text" id="revBranch" required placeholder="e.g. Mechanical Engg, 4th Sem" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-orange-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Rating</label>
+          <select id="revRating" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-orange-500">
+            <option value="5">⭐⭐⭐⭐⭐ (5/5) - Outstanding Experience</option>
+            <option value="4">⭐⭐⭐⭐ (4/5) - Very Good</option>
+            <option value="3">⭐⭐⭐ (3/5) - Average</option>
+            <option value="2">⭐⭐ (2/5) - Needs Improvement</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Your Review / Favorite Dish</label>
+          <textarea id="revComment" required rows="3" placeholder="Tell us what you liked about the food, speed, or staff..." class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-orange-500"></textarea>
+        </div>
+
+        <div class="pt-2 flex gap-2">
+          <button type="button" onclick="closeAddReviewModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md transition">
+            Publish Review
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= STUDENT LOGIN MODAL (USN & DOB) ================= -->
+  <div id="studentLoginModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-orange-100 relative">
+      <button onclick="closeStudentLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+        </div>
+        <h3 class="font-heading text-2xl font-black text-slate-900">KLE Student Login</h3>
+        <p class="text-xs text-slate-500 mt-1">Login with your University USN number and Date of Birth as Password</p>
+      </div>
+
+      <form id="studentLoginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Username (University USN)</label>
+          <div class="relative">
+            <i data-lucide="user-check" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="loginUSNInput" 
+              required 
+              placeholder="e.g. 2KL22CS084" 
+              class="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 text-xs sm:text-sm font-bold focus:outline-none focus:border-orange-500 uppercase bg-slate-50 focus:bg-white transition"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Password (Date of Birth - DD/MM/YYYY)</label>
+          <div class="relative">
+            <i data-lucide="calendar" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="loginDOBInput" 
+              required 
+              placeholder="e.g. 15/08/2004" 
+              class="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 text-xs sm:text-sm font-bold focus:outline-none focus:border-orange-500 bg-slate-50 focus:bg-white transition"
+            >
+          </div>
+          <span class="text-[10px] text-slate-400 block mt-1">Format: DD/MM/YYYY (e.g. 15/08/2004)</span>
+        </div>
+
+        <!-- Quick Demo Profiles Pills for immediate testing -->
+        <div class="pt-1 bg-orange-50/60 p-3 rounded-2xl border border-orange-100">
+          <span class="block text-[11px] font-bold text-orange-900 mb-1.5">⚡ Instant Demo Login (Click to fill Gokak courses):</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="fillDemoStudent('U15GK22BCA018', '15/08/2004')" class="px-2.5 py-1 rounded-xl bg-white hover:bg-orange-100 text-orange-700 border border-orange-200 text-[11px] font-bold shadow-sm transition">
+              Rahul (BCA • U15GK22BCA018)
+            </button>
+            <button type="button" onclick="fillDemoStudent('U15GK23BCM042', '05/12/2005')" class="px-2.5 py-1 rounded-xl bg-white hover:bg-orange-100 text-orange-700 border border-orange-200 text-[11px] font-bold shadow-sm transition">
+              Pooja (B.COM • U15GK23BCM042)
+            </button>
+            <button type="button" onclick="fillDemoStudent('U15GK23BBA015', '20/03/2003')" class="px-2.5 py-1 rounded-xl bg-white hover:bg-orange-100 text-orange-700 border border-orange-200 text-[11px] font-bold shadow-sm transition">
+              Darshan (BBA • U15GK23BBA015)
+            </button>
+            <button type="button" onclick="fillDemoStudent('U15GK22BA009', '12/06/2004')" class="px-2.5 py-1 rounded-xl bg-white hover:bg-orange-100 text-orange-700 border border-orange-200 text-[11px] font-bold shadow-sm transition">
+              Sneha (BA • U15GK22BA009)
+            </button>
+          </div>
+          <span class="block text-[10px] text-slate-500 mt-1.5">Serving BCA, B.COM, BBA & BA students of KLE Society's College of BCA, Gokak.</span>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-black text-sm rounded-2xl shadow-xl shadow-orange-600/30 transition active:scale-95 flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Login to KLE Canteen</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= STUDENT MY ORDERS & LIVE COOKING STATUS MODAL ================= -->
+  <div id="studentOrdersModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div>
+          <h3 class="font-heading font-extrabold text-xl text-slate-900">My Canteen Orders</h3>
+          <p class="text-xs text-slate-500">Live kitchen cooking status & token tracking</p>
+        </div>
+        <button onclick="closeMyOrdersModal()" class="text-slate-400 hover:text-slate-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div id="studentOrdersList" class="flex-1 overflow-y-auto py-4 space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= LIVE TOAST NOTIFICATION CONTAINER ================= -->
+  <div id="toastContainer" class="fixed bottom-6 left-6 z-50 flex flex-col gap-2 max-w-sm pointer-events-none">
+    <!-- Populated by showToast() in app.js -->
+  </div>
+
+  <!-- ================= APPLICATION SCRIPTS ================= -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/data.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
