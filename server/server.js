@@ -36,10 +36,45 @@ app.use(express.static(rootDir));
 
 // HTTP server and WebSocket server
 const server = http.createServer(app);
-const wss = new WebSocketServer({ server, path: '/ws' });
+let wss = null;
+
+if (!process.env.VERCEL) {
+  try {
+    wss = new WebSocketServer({ server, path: '/ws' });
+    wss.on('connection', (ws, req) => {
+      console.log(`[WebSocket] New client connected from ${req.socket.remoteAddress}`);
+
+      // Send initial welcome & connection ping
+      ws.send(JSON.stringify({
+        type: 'CONNECTED',
+        payload: {
+          message: "Connected to KLE Canteen Live Server",
+          campus: CAMPUS_INFO.collegeName,
+          time: new Date().toISOString()
+        }
+      }));
+
+      ws.on('message', (message) => {
+        try {
+          const data = JSON.parse(message);
+          if (data.type === 'PING') {
+            ws.send(JSON.stringify({ type: 'PONG', timestamp: Date.now() }));
+          }
+        } catch (e) {}
+      });
+
+      ws.on('close', () => {
+        console.log('[WebSocket] Client disconnected.');
+      });
+    });
+  } catch (e) {
+    console.warn('[WebSocket Init Warning]:', e.message);
+  }
+}
 
 // Active WebSocket Clients and Broadcast helper
 function broadcast(type, payload) {
+  if (!wss || !wss.clients) return;
   const message = JSON.stringify({ type, payload, timestamp: new Date().toISOString() });
   let count = 0;
   wss.clients.forEach(client => {
@@ -50,35 +85,6 @@ function broadcast(type, payload) {
   });
   console.log(`[WebSocket] Broadcasted "${type}" to ${count} active clients.`);
 }
-
-wss.on('connection', (ws, req) => {
-  console.log(`[WebSocket] New client connected from ${req.socket.remoteAddress}`);
-
-  // Send initial welcome & connection ping
-  ws.send(JSON.stringify({
-    type: 'CONNECTED',
-    payload: {
-      message: "Connected to KLE Canteen Live Server",
-      campus: CAMPUS_INFO.collegeName,
-      time: new Date().toISOString()
-    }
-  }));
-
-  ws.on('message', (message) => {
-    try {
-      const data = JSON.parse(message);
-      if (data.type === 'PING') {
-        ws.send(JSON.stringify({ type: 'PONG', timestamp: Date.now() }));
-      }
-    } catch (e) {
-      // ignore
-    }
-  });
-
-  ws.on('close', () => {
-    console.log('[WebSocket] Client disconnected.');
-  });
-});
 
 // ==========================================
 // REST API ROUTES

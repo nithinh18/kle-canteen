@@ -22,12 +22,18 @@ const {
 } = require('../js/data.js');
 
 // 1. LOCAL SQLITE INITIALIZATION (Fallback & Offline Storage)
-const DATA_DIR = path.join(__dirname, '..', 'data');
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+let sqlite = null;
+try {
+  const { DatabaseSync } = require('node:sqlite');
+  const DATA_DIR = process.env.VERCEL ? '/tmp' : path.join(__dirname, '..', 'data');
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  const DB_PATH = path.join(DATA_DIR, 'kle_canteen.db');
+  sqlite = new DatabaseSync(DB_PATH);
+} catch (e) {
+  console.log('[SQLite not available on this runtime, using Supabase PostgreSQL]');
 }
-const DB_PATH = path.join(DATA_DIR, 'kle_canteen.db');
-const sqlite = new DatabaseSync(DB_PATH);
 
 // 2. SUPABASE POSTGRESQL POOL INITIALIZATION
 const SUPABASE_CONFIG = {
@@ -114,6 +120,7 @@ function formatOrderRow(row) {
 
 // Initialize Local SQLite Tables & Seed
 function initSqlite() {
+  if (!sqlite) return;
   sqlite.exec('PRAGMA foreign_keys = ON;');
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS students (
