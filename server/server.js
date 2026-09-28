@@ -274,13 +274,17 @@ app.use((req, res) => {
   res.sendFile(path.join(rootDir, 'index.html'));
 });
 
-// Start Full Stack Server
-server.listen(PORT, () => {
-  console.log('================================================================');
-  console.log(`🚀 KLE Canteen Full Stack Server Running!`);
-  console.log(`📍 Campus: ${CAMPUS_INFO.collegeName} (${CAMPUS_INFO.location})`);
-  console.log(`🌐 Local URL: http://localhost:${PORT}`);
-  console.log(`⚡ WebSocket: ws://localhost:${PORT}/ws`);
-  console.log(`🗄️ Database: SQLite (data/kle_canteen.db)`);
-  console.log('================================================================');
-});
+// Start Full Stack Server (when not running as Vercel serverless function)
+if (!process.env.VERCEL) {
+  server.listen(PORT, () => {
+    console.log('================================================================');
+    console.log(`🚀 KLE Canteen Full Stack Server Running!`);
+    console.log(`📍 Campus: ${CAMPUS_INFO.collegeName} (${CAMPUS_INFO.location})`);
+    console.log(`🌐 Local URL: http://localhost:${PORT}`);
+    console.log(`⚡ WebSocket: ws://localhost:${PORT}/ws`);
+    console.log(`🗄️ Database: SQLite (data/kle_canteen.db)`);
+    console.log('================================================================');
+  });
+}
+
+module.exports = app;
